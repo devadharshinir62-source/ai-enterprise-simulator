@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const API_URL = "http://localhost:8000";
+const API_URL = "https://ai-enterprise-simulator.onrender.com";
 
 function CreateCompanyPage() {
   const navigate = useNavigate();
@@ -19,9 +19,7 @@ function CreateCompanyPage() {
   const [fetchError, setFetchError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // -----------------------------------------
   // Handle input changes
-  // -----------------------------------------
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -30,7 +28,6 @@ function CreateCompanyPage() {
       [name]: value,
     }));
 
-    // Remove error for the field being edited
     setErrors((prev) => ({
       ...prev,
       [name]: "",
@@ -39,9 +36,7 @@ function CreateCompanyPage() {
     setFetchError("");
   };
 
-  // -----------------------------------------
   // Validate form
-  // -----------------------------------------
   const validate = () => {
     const newErrors = {};
 
@@ -82,9 +77,7 @@ function CreateCompanyPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // -----------------------------------------
   // Submit form
-  // -----------------------------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -95,7 +88,6 @@ function CreateCompanyPage() {
 
     setFetchError("");
 
-    // Validate form
     const isValid = validate();
 
     if (!isValid) {
@@ -103,7 +95,6 @@ function CreateCompanyPage() {
       return;
     }
 
-    // Create backend payload
     const payload = {
       company_name: form.companyName.trim(),
       business_idea: form.businessIdea.trim(),
@@ -133,7 +124,6 @@ function CreateCompanyPage() {
 
       console.log("BACKEND STATUS:", response.status);
 
-      // Handle backend error
       if (!response.ok) {
         let errorMessage = "Failed to create company.";
 
@@ -157,7 +147,6 @@ function CreateCompanyPage() {
         throw new Error(errorMessage);
       }
 
-      // Read successful response
       const company = await response.json();
 
       console.log("COMPANY CREATED SUCCESSFULLY:");
@@ -169,7 +158,6 @@ function CreateCompanyPage() {
         JSON.stringify(company)
       );
 
-      // Navigate to dashboard
       console.log("NAVIGATING TO DASHBOARD...");
 
       navigate("/dashboard");
@@ -178,7 +166,7 @@ function CreateCompanyPage() {
 
       if (error instanceof TypeError) {
         setFetchError(
-          "Unable to connect to the backend. Please make sure FastAPI is running on http://localhost:8000."
+          "Unable to connect to the backend. Please make sure the backend server is available."
         );
       } else {
         setFetchError(
@@ -190,16 +178,11 @@ function CreateCompanyPage() {
     }
   };
 
-  // -----------------------------------------
   // Go back
-  // -----------------------------------------
   const goBack = () => {
     navigate("/");
   };
 
-  // -----------------------------------------
-  // UI
-  // -----------------------------------------
   return (
     <div className="min-h-screen bg-gray-900 text-white p-4 flex items-center justify-center">
       <div className="w-full max-w-2xl py-8">
@@ -216,7 +199,7 @@ function CreateCompanyPage() {
           </p>
         </div>
 
-        {/* Error from backend */}
+        {/* Backend Error */}
         {fetchError && (
           <div className="mb-6 rounded-lg border border-red-500 bg-red-900/30 p-4 text-red-300">
             <strong>Error:</strong> {fetchError}
@@ -224,10 +207,7 @@ function CreateCompanyPage() {
         )}
 
         {/* Form */}
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-5"
-        >
+        <form onSubmit={handleSubmit} className="space-y-5">
 
           {/* Company Name */}
           <div>

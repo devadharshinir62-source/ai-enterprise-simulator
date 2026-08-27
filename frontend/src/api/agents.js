@@ -1,4 +1,4 @@
-﻿const API_URL = "http://localhost:8000";
+﻿const API_URL = "https://ai-enterprise-simulator.onrender.com";
 
 export async function runAgents(companyId) {
   let id = companyId;
